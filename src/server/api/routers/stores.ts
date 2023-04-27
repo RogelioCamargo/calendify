@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
@@ -10,7 +11,22 @@ export const storesRouter = createTRPCRouter({
       },
     });
   }),
+  getById: privateProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const store = await ctx.prisma.store.findFirst({
+        where: {
+          id: input.id,
+          userId: ctx.currentUserId,
+        },
+      });
 
+      if (!store) {
+        throw new TRPCError({ code: "NOT_FOUND" });
+      }
+
+      return store;
+    }),
   create: privateProcedure
     .input(
       z.object({

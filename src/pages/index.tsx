@@ -270,7 +270,7 @@ const Home: NextPage = () => {
           <div className="flex gap-6 md:gap-10">
             <Link href="/" className="flex items-center space-x-2">
               <CalendarPlus />
-              <span className="text-xl font-bold">Calendify</span>
+              <span className="text-xl font-semibold">Calendify</span>
             </Link>
           </div>
           <DropdownMenu>
@@ -326,7 +326,9 @@ const Home: NextPage = () => {
                     className="m-0 border-t p-0 even:bg-muted"
                   >
                     <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                      {format(schedule.endOfWeekDate, "PPP")}
+                      <Link href={`/schedule/${schedule.id}`}>
+                        {format(schedule.endOfWeekDate, "PPP")}
+                      </Link>
                     </td>
                     <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
                       {store.name} · {store.location}
@@ -357,7 +359,7 @@ const Home: NextPage = () => {
               {stores?.map((store) => (
                 <tr key={store.id} className="m-0 border-t p-0 even:bg-muted">
                   <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                    {store.name}
+                    <Link href={`/store/${store.id}`}>{store.name}</Link>
                   </td>
                   <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
                     {store.location}
