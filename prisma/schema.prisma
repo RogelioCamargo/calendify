@@ -11,8 +11,49 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model Store {
+	id        String   @id @default(cuid())
+	createdAt DateTime @default(now())
+	storeNumber Int 
+	name String @db.VarChar(255)
+	location String @db.VarChar(255)
+	employees Employee[]		
+	schedules Schedule[]
+	userId String
+}
+
+model Employee {
+	id String @id @default(cuid())
+	employeeNumber Int
+	name String
+	store Store @relation(fields: [storeId], references: [id])
+	storeId String
+	shifts Shift[]
+	userId String
+	@@index([storeId])
+}
+
+model Schedule {
+	id String @id @default(cuid())
+	store Store @relation(fields: [storeId], references: [id])
+	storeId String
+	endOfWeekDate DateTime
+	shifts Shift[]
+	userId String 
+	@@index([storeId])
+}
+
+model Shift {
+	id String @id @default(cuid())
+	employee Employee @relation(fields: [employeeId], references: [id])
+	employeeId String
+	schedule Schedule @relation(fields: [scheduleId], references: [id])
+	scheduleId String
+	dayOfWeek Int
+	startTime String @db.VarChar(255)
+	endTime String @db.VarChar(255)
+	notes String?
+	userId String
+	@@index([employeeId])
+	@@index([scheduleId])
 }
