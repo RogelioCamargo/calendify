@@ -13,12 +13,13 @@ export const employeesRouter = createTRPCRouter({
         },
       });
     }),
-
   create: privateProcedure
     .input(
       z.object({
-        employeeNumber: z.number({ required_error: "Employee number is required" }),
-				name: z.string({ required_error: "Name is required" }),
+        employeeNumber: z.number({
+          required_error: "Employee number is required",
+        }),
+        name: z.string({ required_error: "Name is required" }),
         storeId: z.string({ required_error: "Store is required" }),
       })
     )

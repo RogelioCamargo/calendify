@@ -107,11 +107,10 @@ const Store: NextPage = () => {
         </div>
       </header>
       <main className="mx-auto max-w-3xl px-2">
-				<H1>{store.name}</H1>
-				<div className="flex gap-2 items-center">
-        <H2>{store.location}</H2>
-					<Badge>{store.storeNumber}</Badge>
-				</div>
+        <H1>
+          {store.storeNumber} · {store.name}
+        </H1>
+        <Badge>{store.location}</Badge>
         <div className="mt-7 flex items-center justify-between">
           <H2>Employees</H2>
           <CreateEmployeeWizard />

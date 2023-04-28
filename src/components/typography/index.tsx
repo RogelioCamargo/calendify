@@ -17,7 +17,7 @@ export function H2({ children, className }: PropsWithChildrenAndClassName) {
   return (
     <h2
       className={cn(
-        "mt-10 scroll-m-20 pb-1 text-xl md:text-2xl font-bold tracking-tight transition-colors first:mt-0",
+        "scroll-m-20 text-xl md:text-2xl font-bold tracking-tight transition-colors",
         className
       )}
     >

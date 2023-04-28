@@ -13,14 +13,25 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
+import { H1, H2, H3 } from "~/components/typography";
+import { Badge } from "~/components/ui/badge";
+import { useRouter } from "next/router";
+import { format } from "date-fns";
 
 const Home: NextPage = () => {
-  const { data: stores, isLoading: isLoadingStores } =
-    api.stores.getAll.useQuery();
-  const { data: schedules, isLoading: isLoadingSchedules } =
-    api.schedules.getAll.useQuery();
-
+  const router = useRouter();
+  const { id } = router.query;
   const user = useUser();
+
+  if (!id || Array.isArray(id)) {
+    return <div>404</div>;
+  }
+
+  const { data: schedule, isLoading: isScheduleLoading } =
+    api.schedules.getById.useQuery({ id });
+
+  if (isScheduleLoading) return <div>Loading...</div>;
+  if (!schedule) return <div>Something went wrong!</div>;
 
   if (!user.isSignedIn) {
     return (
@@ -36,8 +47,7 @@ const Home: NextPage = () => {
       </>
     );
   }
-  if (isLoadingStores || isLoadingSchedules) return <div>Loading...</div>;
-  if (!stores || !schedules) return <div>Something went wrong!</div>;
+
   return (
     <>
       <Head>
@@ -75,7 +85,11 @@ const Home: NextPage = () => {
         </div>
       </header>
       <main className="mx-auto max-w-3xl px-2">
-        <h1>Schedule View</h1>
+        <H1>{format(schedule.endOfWeekDate, "PPP")}</H1>
+        <H2>
+          {schedule.store.storeNumber} · {schedule.store.name}
+        </H2>
+        <Badge>{schedule.store.location}</Badge>
       </main>
     </>
   );
