@@ -107,9 +107,9 @@ const Store: NextPage = () => {
         </div>
       </header>
       <main className="mx-auto max-w-3xl px-2">
-        <H1>{store.location}</H1>
+				<H1>{store.name}</H1>
 				<div className="flex gap-2 items-center">
-					<H2>{store.name}</H2>
+        <H2>{store.location}</H2>
 					<Badge>{store.storeNumber}</Badge>
 				</div>
         <div className="mt-7 flex items-center justify-between">

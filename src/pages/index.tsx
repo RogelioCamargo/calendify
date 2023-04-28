@@ -107,7 +107,6 @@ const Home: NextPage = () => {
       <main className="mx-auto max-w-3xl px-2">
         {!user.isSignedIn && <SignInButton />}
         <H1 className="mt-2">Dashboard</H1>
-				<Subtle className="mb-10">Manage your schedules and stores.</Subtle>
         <div className="mt-5 flex justify-between items-center">
           <H2>Schedules</H2>
           <CreateScheduleWizard />
