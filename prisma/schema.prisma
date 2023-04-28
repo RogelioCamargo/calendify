@@ -50,8 +50,8 @@ model Shift {
 	schedule Schedule @relation(fields: [scheduleId], references: [id])
 	scheduleId String
 	dayOfWeek Int
-	startTime String @db.VarChar(255)
-	endTime String @db.VarChar(255)
+	startTime DateTime
+	endTime DateTime
 	notes String?
 	userId String
 	@@index([employeeId])
