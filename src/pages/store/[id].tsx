@@ -49,11 +49,8 @@ const Store: NextPage = () => {
   const { data: store, isLoading: isStoreLoading } =
     api.stores.getById.useQuery({ id });
 
-  const { data: employees, isLoading: isEmployeesLoading } =
-    api.employees.getAll.useQuery({ storeId: id });
-
-  if (isStoreLoading || isEmployeesLoading) return <div>Loading...</div>;
-  if (!store || !employees) return <div>Something went wrong!</div>;
+  if (isStoreLoading) return <div>Loading...</div>;
+  if (!store) return <div>Something went wrong!</div>;
 
   if (!user.isSignedIn) {
     return (
@@ -125,7 +122,7 @@ const Store: NextPage = () => {
               </tr>
             </thead>
             <tbody>
-              {employees?.map((employee) => (
+              {store.employees?.map((employee) => (
                 <tr
                   key={employee.id}
                   className="m-0 border-t p-0 even:bg-muted"

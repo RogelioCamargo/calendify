@@ -19,6 +19,9 @@ export const storesRouter = createTRPCRouter({
           id: input.id,
           userId: ctx.currentUserId,
         },
+				include: {
+					employees: true,
+				}
       });
 
       if (!store) {
