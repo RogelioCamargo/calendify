@@ -14,8 +14,8 @@ export const schedulesRouter = createTRPCRouter({
   create: privateProcedure
     .input(
       z.object({
-        endOfWeekDate: z.date({ required_error: "Store number is required" }),
-        storeId: z.string({ required_error: "Name is required" }),
+        endOfWeekDate: z.date({ required_error: "End of week date is required" }),
+        storeId: z.string({ required_error: "Store is required" }),
       })
     )
     .mutation(async ({ ctx, input }) => {
