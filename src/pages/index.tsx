@@ -43,6 +43,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
+import { Badge } from "~/components/ui/badge";
 
 const Home: NextPage = () => {
   const { data: stores, isLoading: isLoadingStores } =
@@ -141,7 +142,10 @@ const Home: NextPage = () => {
                       </Link>
                     </td>
                     <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                      {store.name} · {store.location}
+											<div>
+                      	{store.storeNumber} · {store.name}
+											</div>
+											<Badge>{store.location}</Badge>
                     </td>
                   </tr>
                 );
@@ -157,6 +161,9 @@ const Home: NextPage = () => {
           <table className="w-full">
             <thead>
               <tr className="m-0 border-t p-0 even:bg-muted">
+								<th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
+                  ID
+                </th>
                 <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
                   Name
                 </th>
@@ -168,6 +175,9 @@ const Home: NextPage = () => {
             <tbody>
               {stores?.map((store) => (
                 <tr key={store.id} className="m-0 border-t p-0 even:bg-muted">
+									<td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
+                    <Link href={`/store/${store.id}`}>{store.storeNumber}</Link>
+                  </td>
                   <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
                     <Link href={`/store/${store.id}`}>{store.name}</Link>
                   </td>
