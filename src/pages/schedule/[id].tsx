@@ -30,11 +30,26 @@ import { Button } from "~/components/ui/button";
 import { Label } from "~/components/ui/label";
 import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
+import { useState } from "react";
 
-const Home: NextPage = () => {
+const initialShiftState = {
+  startTime: "",
+  endTime: "",
+  notes: "",
+};
+const Schedule: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
   const user = useUser();
+  const [newShift, setNewShift] = useState(initialShiftState);
+
+  const ctx = api.useContext();
+  const { mutate } = api.shifts.create.useMutation({
+    onSuccess: () => {
+      setNewShift(initialShiftState);
+      void ctx.schedules.getById.invalidate();
+    },
+  });
 
   if (!id || Array.isArray(id)) {
     return <div>404</div>;
@@ -132,58 +147,122 @@ const Home: NextPage = () => {
                   <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
                     {employee.name}
                   </td>
-                  <td className="border px-4 py-2 w-40 text-center [&[align=center]]:text-center [&[align=right]]:text-right">
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button variant="ghost">
-                          <Plus className="mr-2 h-4 w-4" /> Shift
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="sm:max-w-[425px]">
-                        <DialogHeader>
-                          <DialogTitle>New Shift</DialogTitle>
-                          <DialogDescription>
-														<p>{employee.name}</p>
-														{/* <p>{format()}</p> */}
-                            <p>{schedule.store.name} · {schedule.store.location}</p>
-                          </DialogDescription>
-                        </DialogHeader>
-                        <form className="grid w-full items-center gap-4">
-                          <div className="flex justify-between gap-3">
-                            <div className="flex w-full flex-col space-y-1.5">
-                              <Label htmlFor="startTime">Start Time</Label>
-                              <Input
-                                type="time"
-                                name="startTime"
-                                id="startTime"
-                              />
-                            </div>
-                            <div className="flex w-full flex-col space-y-1.5">
-                              <Label htmlFor="endTime">End Time</Label>
-                              <Input type="time" name="endTime" id="endTime" />
-                            </div>
-                          </div>
-                          <div className="flex flex-col space-y-1.5">
-                            <Label htmlFor="notes">Notes</Label>
-                            <Textarea
-                              id="notes"
-                              name="notes"
-                              placeholder="Add any notes here."
-                            />
-                          </div>
-                        </form>
-                        <DialogFooter>
-                          <Button type="submit">Submit</Button>
-                        </DialogFooter>
-                      </DialogContent>
-                    </Dialog>
-                  </td>
-                  <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right"></td>
-                  <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right"></td>
-                  <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right"></td>
-                  <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right"></td>
-                  <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right"></td>
-                  <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right"></td>
+                  {schedule.weekDates.map((date) => {
+                    const shift =
+                      schedule.shiftsByEmployeeId[employee.id]![date.getDay()];
+                    if (shift) {
+                      return (
+                        <div
+                          key={
+                            schedule.id + employee.id + String(date.getDay())
+                          }
+                        >
+                          Shift Info Here
+                        </div>
+                      );
+                    }
+                    return (
+                      <td
+                        key={schedule.id + employee.id + String(date.getDay())}
+                        className="w-40 border px-4 py-2 text-center [&[align=center]]:text-center [&[align=right]]:text-right"
+                      >
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button variant="ghost">
+                              <Plus className="mr-2 h-4 w-4" /> Shift
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="sm:max-w-[425px]">
+                            <DialogHeader>
+                              <DialogTitle>New Shift</DialogTitle>
+                              <DialogDescription>
+                                <p>{employee.name}</p>
+                                {/* <p>{format()}</p> */}
+                                <p>
+                                  {schedule.store.name} ·{" "}
+                                  {schedule.store.location}
+                                </p>
+                              </DialogDescription>
+                            </DialogHeader>
+                            <form className="grid w-full items-center gap-4">
+                              <div className="flex justify-between gap-3">
+                                <div className="flex w-full flex-col space-y-1.5">
+                                  <Label htmlFor="startTime">Start Time</Label>
+                                  <Input
+                                    type="time"
+                                    name="startTime"
+                                    id="startTime"
+                                    value={newShift.startTime}
+                                    onChange={(e) =>
+                                      setNewShift({
+                                        ...newShift,
+                                        startTime: e.target.value,
+                                      })
+                                    }
+                                  />
+                                </div>
+                                <div className="flex w-full flex-col space-y-1.5">
+                                  <Label htmlFor="endTime">End Time</Label>
+                                  <Input
+                                    type="time"
+                                    name="endTime"
+                                    id="endTime"
+                                    value={newShift.endTime}
+                                    onChange={(e) =>
+                                      setNewShift({
+                                        ...newShift,
+                                        endTime: e.target.value,
+                                      })
+                                    }
+                                  />
+                                </div>
+                              </div>
+                              <div className="flex flex-col space-y-1.5">
+                                <Label htmlFor="notes">Notes</Label>
+                                <Textarea
+                                  id="notes"
+                                  name="notes"
+                                  placeholder="Add any notes here."
+                                  value={newShift.notes}
+                                  onChange={(e) =>
+                                    setNewShift({
+                                      ...newShift,
+                                      notes: e.target.value,
+                                    })
+                                  }
+                                />
+                              </div>
+                            </form>
+                            <DialogFooter>
+                              <Button
+                                type="submit"
+                                onClick={() =>
+                                  mutate({
+                                    startTime: new Date(
+                                      `${format(date, "yyyy-MM-dd")}T${
+                                        newShift.startTime
+                                      }:00`
+                                    ),
+                                    endTime: new Date(
+                                      `${format(date, "yyyy-MM-dd")}T${
+                                        newShift.endTime
+                                      }:00`
+                                    ),
+                                    notes: newShift.notes,
+                                    employeeId: employee.id,
+                                    scheduleId: schedule.id,
+                                    dayOfWeek: date.getDay(),
+                                  })
+                                }
+                              >
+                                Submit
+                              </Button>
+                            </DialogFooter>
+                          </DialogContent>
+                        </Dialog>
+                      </td>
+                    );
+                  })}
                 </tr>
               ))}
             </tbody>
@@ -194,4 +273,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default Schedule;

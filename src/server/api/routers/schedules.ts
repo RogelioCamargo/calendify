@@ -28,6 +28,13 @@ export const schedulesRouter = createTRPCRouter({
         },
       });
 
+      const shifts = await ctx.prisma.shift.findMany({
+        where: {
+          scheduleId: input.id,
+          userId: ctx.currentUserId,
+        },
+      });
+
       if (!schedule) {
         throw new TRPCError({ code: "NOT_FOUND" });
       }
@@ -41,9 +48,34 @@ export const schedulesRouter = createTRPCRouter({
       );
       const weekDates = getDates(endOfWeekDate);
 
+      const shiftsByEmployeeId: {
+        [employeeId: string]: {
+          [dayOfWeek: number]: (typeof shifts)[0] | null;
+        };
+      } = {};
+
+      for (const employee of schedule.store.employees) {
+        shiftsByEmployeeId[employee.id] = weekDates.reduce(
+          (scheduleShifts, scheduleDay) => {
+            scheduleShifts[scheduleDay.getDay()] = null;
+            return scheduleShifts;
+          },
+          {} as {
+            [dayOfWeek: number]: (typeof shifts)[0] | null;
+          }
+        );
+      }
+
+      for (const shift of shifts) {
+        const { employeeId, dayOfWeek } = shift;
+
+        shiftsByEmployeeId[employeeId]![dayOfWeek] = shift;
+      }
+
       return {
         ...schedule,
         weekDates,
+        shiftsByEmployeeId,
       };
     }),
   create: privateProcedure
