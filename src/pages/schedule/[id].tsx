@@ -1,5 +1,5 @@
 import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
-import { LogOut, CalendarPlus } from "lucide-react";
+import { LogOut, CalendarPlus, Plus } from "lucide-react";
 import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
@@ -17,6 +17,19 @@ import { H1, H2, H3 } from "~/components/typography";
 import { Badge } from "~/components/ui/badge";
 import { useRouter } from "next/router";
 import { format } from "date-fns";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "~/components/ui/dialog";
+import { Button } from "~/components/ui/button";
+import { Label } from "~/components/ui/label";
+import { Input } from "~/components/ui/input";
+import { Textarea } from "~/components/ui/textarea";
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -48,8 +61,8 @@ const Home: NextPage = () => {
     );
   }
 
-	console.log(schedule.endOfWeekDate);
-	console.log(schedule.weekDates);
+  console.log(schedule.endOfWeekDate);
+  console.log(schedule.weekDates);
 
   return (
     <>
@@ -103,7 +116,7 @@ const Home: NextPage = () => {
                 {schedule.weekDates.map((date) => (
                   <th
                     key={date.toString()}
-                    className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right"
+                    className="border px-4 py-2 text-center font-bold [&[align=center]]:text-center [&[align=right]]:text-right"
                   >
                     {format(date, "E MMM dd yyyy")}
                   </th>
@@ -111,84 +124,68 @@ const Home: NextPage = () => {
               </tr>
             </thead>
             <tbody>
-              <tr className="m-0 border-t p-0 even:bg-muted">
-                <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                  Empty
-                </td>
-                <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                  Overflowing
-                </td>
-                <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                  Empty
-                </td>
-                <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                  Overflowing
-                </td>
-                <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                  Empty
-                </td>
-                <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                  Overflowing
-                </td>
-                <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                  Empty
-                </td>
-                <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                  Overflowing
-                </td>
-              </tr>
-              <tr className="m-0 border-t p-0 even:bg-muted">
-                <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                  Modest
-                </td>
-                <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                  Satisfied
-                </td>
-                <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                  Modest
-                </td>
-                <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                  Satisfied
-                </td>
-                <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                  Modest
-                </td>
-                <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                  Satisfied
-                </td>
-                <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                  Modest
-                </td>
-                <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                  Satisfied
-                </td>
-              </tr>
-              <tr className="m-0 border-t p-0 even:bg-muted">
-                <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                  Full
-                </td>
-                <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                  Ecstatic
-                </td>
-                <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                  Full
-                </td>
-                <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                  Ecstatic
-                </td>
-                <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                  Full
-                </td>
-                <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                  Ecstatic
-                </td>
-                <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                  Full
-                </td>
-                <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                  Ecstatic
-                </td>
-              </tr>
+              {schedule.store.employees.map((employee) => (
+                <tr
+                  key={employee.id}
+                  className="m-0 border-t p-0 even:bg-muted"
+                >
+                  <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
+                    {employee.name}
+                  </td>
+                  <td className="border px-4 py-2 w-40 text-center [&[align=center]]:text-center [&[align=right]]:text-right">
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button variant="ghost">
+                          <Plus className="mr-2 h-4 w-4" /> Shift
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-[425px]">
+                        <DialogHeader>
+                          <DialogTitle>New Shift</DialogTitle>
+                          <DialogDescription>
+														<p>{employee.name}</p>
+														{/* <p>{format()}</p> */}
+                            <p>{schedule.store.name} · {schedule.store.location}</p>
+                          </DialogDescription>
+                        </DialogHeader>
+                        <form className="grid w-full items-center gap-4">
+                          <div className="flex justify-between gap-3">
+                            <div className="flex w-full flex-col space-y-1.5">
+                              <Label htmlFor="startTime">Start Time</Label>
+                              <Input
+                                type="time"
+                                name="startTime"
+                                id="startTime"
+                              />
+                            </div>
+                            <div className="flex w-full flex-col space-y-1.5">
+                              <Label htmlFor="endTime">End Time</Label>
+                              <Input type="time" name="endTime" id="endTime" />
+                            </div>
+                          </div>
+                          <div className="flex flex-col space-y-1.5">
+                            <Label htmlFor="notes">Notes</Label>
+                            <Textarea
+                              id="notes"
+                              name="notes"
+                              placeholder="Add any notes here."
+                            />
+                          </div>
+                        </form>
+                        <DialogFooter>
+                          <Button type="submit">Submit</Button>
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
+                  </td>
+                  <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right"></td>
+                  <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right"></td>
+                  <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right"></td>
+                  <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right"></td>
+                  <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right"></td>
+                  <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right"></td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
