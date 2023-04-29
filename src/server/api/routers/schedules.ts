@@ -20,7 +20,11 @@ export const schedulesRouter = createTRPCRouter({
           userId: ctx.currentUserId,
         },
 				include: {
-					store: true,
+					store: {
+						include: {
+							employees: true,
+						}
+					},
 				}
       });
 
@@ -28,7 +32,20 @@ export const schedulesRouter = createTRPCRouter({
         throw new TRPCError({ code: "NOT_FOUND" });
       }
 
-      return schedule;
+			const endOfWeekDate = new Date(
+        Date.UTC(
+          schedule.endOfWeekDate.getUTCFullYear(),
+          schedule.endOfWeekDate.getUTCMonth(),
+          schedule.endOfWeekDate.getUTCDate() + 1
+        )
+      );
+			const weekDates = getDates(endOfWeekDate);
+
+
+      return {
+				...schedule,
+				weekDates
+			};
     }),
   create: privateProcedure
     .input(
@@ -50,3 +67,21 @@ export const schedulesRouter = createTRPCRouter({
       return store;
     }),
 });
+
+export function getDates(date: Date): Date[] {
+  const dates: Date[] = [];
+
+  let currentDate = new Date(
+    Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() - 6)
+  );
+
+  while (currentDate <= date) {
+    dates.push(new Date(currentDate.getTime()));
+
+    const nextDate = new Date(currentDate.getTime());
+    nextDate.setUTCDate(nextDate.getUTCDate() + 1);
+    currentDate = nextDate;
+  }
+
+  return dates;
+}
