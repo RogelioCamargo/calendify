@@ -131,7 +131,7 @@ const Schedule: NextPage = () => {
                 {schedule.weekDates.map((date) => (
                   <th
                     key={date.toString()}
-                    className="border px-4 py-2 text-center font-bold [&[align=center]]:text-center [&[align=right]]:text-right"
+                    className="w-44 border px-4 py-2 text-center font-bold [&[align=center]]:text-center [&[align=right]]:text-right"
                   >
                     {format(date, "E MMM dd yyyy")}
                   </th>
@@ -151,24 +151,43 @@ const Schedule: NextPage = () => {
                     const shift =
                       schedule.shiftsByEmployeeId[employee.id]![date.getDay()];
                     if (shift) {
+                      let startTime, endTime;
+                      if (shift.startTime.getMinutes() === 0) {
+                        startTime = format(shift.startTime, "ha");
+                      } else {
+                        startTime = format(shift.startTime, "h:mma");
+                      }
+
+                      if (shift.endTime.getMinutes() === 0) {
+                        endTime = format(shift.endTime, "ha");
+                      } else {
+                        endTime = format(shift.endTime, "h:mma");
+                      }
                       return (
-                        <div
+                        <td
                           key={
                             schedule.id + employee.id + String(date.getDay())
                           }
+                          className="border px-4 py-2 text-center [&[align=center]]:text-center [&[align=right]]:text-right"
                         >
-                          Shift Info Here
-                        </div>
+													<div className="w-32">
+														<div className="grow">
+															{startTime} - {endTime}
+														</div>
+														<div>{shift.notes}</div>
+
+													</div>
+                        </td>
                       );
                     }
                     return (
                       <td
                         key={schedule.id + employee.id + String(date.getDay())}
-                        className="w-40 border px-4 py-2 text-center [&[align=center]]:text-center [&[align=right]]:text-right"
+                        className="border px-4 py-2 text-center [&[align=center]]:text-center [&[align=right]]:text-right"
                       >
                         <Dialog>
                           <DialogTrigger asChild>
-                            <Button variant="ghost">
+                            <Button variant="ghost" className="w-32">
                               <Plus className="mr-2 h-4 w-4" /> Shift
                             </Button>
                           </DialogTrigger>
