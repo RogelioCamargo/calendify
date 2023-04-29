@@ -61,8 +61,8 @@ const Home: NextPage = () => {
     );
   }
 
-  console.log(schedule.endOfWeekDate);
-  console.log(schedule.weekDates);
+  // console.log(schedule.endOfWeekDate);
+  // console.log(schedule.weekDates);
 
   return (
     <>

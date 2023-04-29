@@ -108,7 +108,7 @@ const Home: NextPage = () => {
       <main className="mx-auto max-w-3xl px-2">
         {!user.isSignedIn && <SignInButton />}
         <H1 className="mt-2">Dashboard</H1>
-        <div className="mt-5 flex justify-between items-center">
+        <div className="mt-5 flex items-center justify-between">
           <H2>Schedules</H2>
           <CreateScheduleWizard />
         </div>
@@ -142,10 +142,10 @@ const Home: NextPage = () => {
                       </Link>
                     </td>
                     <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-											<div>
-                      	{store.storeNumber} · {store.name}
-											</div>
-											<Badge>{store.location}</Badge>
+                      <div>
+                        {store.storeNumber} · {store.name}
+                      </div>
+                      <Badge>{store.location}</Badge>
                     </td>
                   </tr>
                 );
@@ -153,7 +153,7 @@ const Home: NextPage = () => {
             </tbody>
           </table>
         </div>
-        <div className="mt-5 flex justify-between items-center">
+        <div className="mt-5 flex items-center justify-between">
           <H2>Stores</H2>
           <CreateStoreWizard />
         </div>
@@ -161,7 +161,7 @@ const Home: NextPage = () => {
           <table className="w-full">
             <thead>
               <tr className="m-0 border-t p-0 even:bg-muted">
-								<th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
+                <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
                   ID
                 </th>
                 <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
@@ -175,7 +175,7 @@ const Home: NextPage = () => {
             <tbody>
               {stores?.map((store) => (
                 <tr key={store.id} className="m-0 border-t p-0 even:bg-muted">
-									<td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
+                  <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
                     <Link href={`/store/${store.id}`}>{store.storeNumber}</Link>
                   </td>
                   <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
