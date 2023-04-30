@@ -3,7 +3,17 @@ import { z } from "zod";
 import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
 
 export const employeesRouter = createTRPCRouter({
-  getAll: privateProcedure
+  getAll: privateProcedure.query(({ ctx }) => {
+    return ctx.prisma.employee.findMany({
+      where: {
+        userId: ctx.currentUserId,
+      },
+			include: {
+				store: true
+			}
+    });
+  }),
+  getAllByStore: privateProcedure
     .input(z.object({ storeId: z.string() }))
     .query(({ ctx, input }) => {
       return ctx.prisma.employee.findMany({
