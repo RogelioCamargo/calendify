@@ -10,25 +10,42 @@ import {
 } from "./ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { LogOut } from "lucide-react";
-import { SignOutButton } from "@clerk/nextjs";
+import { SignOutButton, useUser } from "@clerk/nextjs";
 
 const Header = () => {
+  const { user } = useUser();
   return (
     <header className="mx-auto max-w-3xl bg-muted px-3 py-5 md:hidden">
       <div className="flex justify-between">
-        <div className="flex gap-6 md:gap-10">
-          <Link href="/" className="flex items-center space-x-2">
-            <CalendarPlus />
-            <span className="text-xl font-bold">calendify</span>
-          </Link>
-        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <div className="flex items-center space-x-2">
+              <CalendarPlus />
+              <span className="text-xl font-bold">calendify</span>
+            </div>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56">
+            <DropdownMenuItem>
+              <Link href="/">Dashboard</Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              <Link href="/schedules">Schedules</Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              <Link href="/stores">Stores</Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              <Link href="/employees">Employees</Link>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Avatar>
-              <AvatarImage
-                src="https://github.com/shadcn.png"
-                alt="Profile image"
-              />
+              <AvatarImage src={user?.profileImageUrl} alt="Profile image" />
               <AvatarFallback>PI</AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>

@@ -1,3 +1,4 @@
+import { useClerk } from "@clerk/nextjs";
 import {
   CalendarPlus,
   Clock4,
@@ -7,14 +8,18 @@ import {
   Users,
 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const Aside = () => {
+  const { signOut } = useClerk();
+  const router = useRouter();
+
   return (
     <div className="hidden md:block">
       <aside className="absolute left-0 top-0 h-screen w-56 bg-muted">
         <nav className="flex h-screen flex-col justify-between">
           <div className="mx-auto flex w-44 flex-col items-center gap-7">
-            <div className="flex items-center mt-10 mb-5">
+            <div className="mb-5 mt-10 flex items-center">
               <CalendarPlus className="mr-2" />
             </div>
             <Link href="/" className="flex items-center">
@@ -35,7 +40,13 @@ const Aside = () => {
             </Link>
           </div>
           <div className="mx-auto mb-10 flex w-44 flex-col items-center">
-            <div className="flex items-center">
+            <div
+              className="flex cursor-pointer items-center"
+              onClick={() => {
+                void signOut();
+                void router.push("/");
+              }}
+            >
               <LogOut className="mr-2" />
               <span className="inline-block w-24 font-bold">Logout</span>
             </div>

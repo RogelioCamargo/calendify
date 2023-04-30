@@ -25,6 +25,13 @@ import { api } from "~/utils/api";
 import { Badge } from "~/components/ui/badge";
 import MainLayout from "~/components/layout";
 import { Input } from "~/components/ui/input";
+import {
+  Table,
+  TableBodyData,
+  TableBodyRow,
+  TableHeadData,
+  TableHeadRow,
+} from "~/components/ui/table";
 
 const Employees: NextPage = () => {
   const { data: employees, isLoading: isLoadingEmployees } =
@@ -39,49 +46,36 @@ const Employees: NextPage = () => {
       <div className="flex items-center">
         <CreateEmployeeWizard />
       </div>
-      <div className="my-3 w-full overflow-y-auto">
-        <table className="w-full">
-          <thead>
-            <tr className="m-0 border-t p-0 even:bg-muted">
-              <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
-                ID
-              </th>
-              <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
-                Name
-              </th>
-              <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
-                Store
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {employees?.map((employee) => {
-              const { store } = employee;
-              return (
-                <tr
-                  key={employee.id}
-                  className="m-0 border-t p-0 even:bg-muted"
-                >
-                  <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                    <Link href={`/employees/${employee.id}`}>
-                      {employee.employeeNumber}
-                    </Link>
-                  </td>
-                  <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                    {employee.name}
-                  </td>
-                  <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                    <div>
-                      {store.storeNumber} · {store.name}
-                    </div>
-                    <Badge>{store.location}</Badge>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+      <Table>
+        <thead>
+          <TableHeadRow>
+            <TableHeadData>ID</TableHeadData>
+            <TableHeadData>Name</TableHeadData>
+            <TableHeadData>Store</TableHeadData>
+          </TableHeadRow>
+        </thead>
+        <tbody>
+          {employees?.map((employee) => {
+            const { store } = employee;
+            return (
+              <TableBodyRow key={employee.id}>
+                <TableBodyData>
+                  <Link href={`/employees/${employee.id}`}>
+                    {employee.employeeNumber}
+                  </Link>
+                </TableBodyData>
+                <TableBodyData>{employee.name}</TableBodyData>
+                <TableBodyData>
+                  <div>
+                    {store.storeNumber} · {store.name}
+                  </div>
+                  <Badge>{store.location}</Badge>
+                </TableBodyData>
+              </TableBodyRow>
+            );
+          })}
+        </tbody>
+      </Table>
     </MainLayout>
   );
 };
@@ -118,9 +112,7 @@ function CreateEmployeeWizard() {
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Create Employee</DialogTitle>
-          <DialogDescription>
-            Add a new employee to a store.
-          </DialogDescription>
+          <DialogDescription>Add a new employee to a store.</DialogDescription>
         </DialogHeader>
         <form className="grid w-full items-center gap-4">
           <div className="flex flex-col space-y-1.5">
