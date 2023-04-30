@@ -136,7 +136,7 @@ const Home: NextPage = () => {
               return (
                 <TableBodyRow key={schedule.id}>
                   <TableBodyData>
-                    <Link href={`/schedule/${schedule.id}`}>
+                    <Link href={`/schedules/${schedule.id}`}>
                       {format(schedule.endOfWeekDate, "PPP")}
                     </Link>
                   </TableBodyData>
@@ -167,10 +167,10 @@ const Home: NextPage = () => {
             {stores?.map((store) => (
               <TableBodyRow key={store.id}>
                 <TableBodyData>
-                  <Link href={`/store/${store.id}`}>{store.storeNumber}</Link>
+                  <Link href={`/stores/${store.id}`}>{store.storeNumber}</Link>
                 </TableBodyData>
                 <TableBodyData>
-                  <Link href={`/store/${store.id}`}>{store.name}</Link>
+                  <Link href={`/stores/${store.id}`}>{store.name}</Link>
                 </TableBodyData>
                 <TableBodyData>{store.location}</TableBodyData>
               </TableBodyRow>
