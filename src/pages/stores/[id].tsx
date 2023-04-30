@@ -109,9 +109,9 @@ function CreateEmployeeWizard() {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Create store</DialogTitle>
+          <DialogTitle>Create Employee</DialogTitle>
           <DialogDescription>
-            Add a new store to make schedules and create employees.
+            Add a new employee to a store.
           </DialogDescription>
         </DialogHeader>
         <form className="grid w-full items-center gap-4">
