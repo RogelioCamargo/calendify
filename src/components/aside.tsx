@@ -34,7 +34,7 @@ const Aside = () => {
               <span className="inline-block w-24 font-bold">Employees</span>
             </Link>
           </div>
-          <div className="mx-auto mb-5 flex w-44 flex-col items-center">
+          <div className="mx-auto mb-10 flex w-44 flex-col items-center">
             <div className="flex items-center">
               <LogOut className="mr-2" />
               <span className="inline-block w-24 font-bold">Logout</span>
