@@ -13,7 +13,7 @@ const MainLayout = ({ children }: PropsWithChildren) => {
       </Head>
       <Header />
       <Aside />
-      <main className="mx-auto max-w-7xl">
+      <main className="mx-auto max-w-8xl">
         <div className="px-3 md:ml-56 md:px-5">{children}</div>
       </main>
     </>
