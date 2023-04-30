@@ -44,6 +44,13 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { Badge } from "~/components/ui/badge";
+import {
+  Table,
+  TableBodyData,
+  TableBodyRow,
+  TableHeadData,
+  TableHeadRow,
+} from "~/components/ui/table";
 
 const Home: NextPage = () => {
   const { data: stores, isLoading: isLoadingStores } =
@@ -112,83 +119,64 @@ const Home: NextPage = () => {
           <H2>Schedules</H2>
           <CreateScheduleWizard />
         </div>
-        <div className="my-3 w-full overflow-y-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="m-0 border-t p-0 even:bg-muted">
-                <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
-                  End of Week
-                </th>
-                <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
-                  Store
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {schedules?.map((schedule) => {
-                const store = stores.find(
-                  (store) => store.id === schedule.storeId
-                );
-                if (!store) return <div>Something went wrong!</div>;
+        <Table>
+          <thead>
+            <TableHeadRow>
+              <TableHeadData>End of Week</TableHeadData>
+              <TableHeadData>Store</TableHeadData>
+            </TableHeadRow>
+          </thead>
+          <tbody>
+            {schedules?.map((schedule) => {
+              const store = stores.find(
+                (store) => store.id === schedule.storeId
+              );
+              if (!store) return <div>Something went wrong!</div>;
 
-                return (
-                  <tr
-                    key={schedule.id}
-                    className="m-0 border-t p-0 even:bg-muted"
-                  >
-                    <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                      <Link href={`/schedule/${schedule.id}`}>
-                        {format(schedule.endOfWeekDate, "PPP")}
-                      </Link>
-                    </td>
-                    <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                      <div>
-                        {store.storeNumber} · {store.name}
-                      </div>
-                      <Badge>{store.location}</Badge>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+              return (
+                <TableBodyRow key={schedule.id}>
+                  <TableBodyData>
+                    <Link href={`/schedule/${schedule.id}`}>
+                      {format(schedule.endOfWeekDate, "PPP")}
+                    </Link>
+                  </TableBodyData>
+                  <TableBodyData>
+                    <div>
+                      {store.storeNumber} · {store.name}
+                    </div>
+                    <Badge>{store.location}</Badge>
+                  </TableBodyData>
+                </TableBodyRow>
+              );
+            })}
+          </tbody>
+        </Table>
         <div className="mt-5 flex items-center justify-between">
           <H2>Stores</H2>
           <CreateStoreWizard />
         </div>
-        <div className="my-3 w-full overflow-y-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="m-0 border-t p-0 even:bg-muted">
-                <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
-                  ID
-                </th>
-                <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
-                  Name
-                </th>
-                <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
-                  Location
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {stores?.map((store) => (
-                <tr key={store.id} className="m-0 border-t p-0 even:bg-muted">
-                  <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                    <Link href={`/store/${store.id}`}>{store.storeNumber}</Link>
-                  </td>
-                  <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                    <Link href={`/store/${store.id}`}>{store.name}</Link>
-                  </td>
-                  <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                    {store.location}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <Table>
+          <thead>
+            <TableHeadRow>
+              <TableHeadData>ID</TableHeadData>
+              <TableHeadData>Name</TableHeadData>
+              <TableHeadData>Location</TableHeadData>
+            </TableHeadRow>
+          </thead>
+          <tbody>
+            {stores?.map((store) => (
+              <TableBodyRow key={store.id}>
+                <TableBodyData>
+                  <Link href={`/store/${store.id}`}>{store.storeNumber}</Link>
+                </TableBodyData>
+                <TableBodyData>
+                  <Link href={`/store/${store.id}`}>{store.name}</Link>
+                </TableBodyData>
+                <TableBodyData>{store.location}</TableBodyData>
+              </TableBodyRow>
+            ))}
+          </tbody>
+        </Table>
       </main>
     </>
   );
