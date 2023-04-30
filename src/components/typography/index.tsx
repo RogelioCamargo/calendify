@@ -29,7 +29,7 @@ export function H2({ children, className }: PropsWithChildrenAndClassName) {
 export function H3({ children, className }: PropsWithChildrenAndClassName) {
   return (
     <h3
-      className={cn("scroll-m-20 text-xl font-bold tracking-tight", className)}
+      className={cn("scroll-m-20 text-lg font-bold tracking-tight", className)}
     >
       {children}
     </h3>
@@ -39,7 +39,7 @@ export function H3({ children, className }: PropsWithChildrenAndClassName) {
 export function H4({ children, className }: PropsWithChildrenAndClassName) {
   return (
     <h4
-      className={cn("scroll-m-20 text-lg font-bold tracking-tight", className)}
+      className={cn("scroll-m-20 text-md font-bold tracking-tight", className)}
     >
       {children}
     </h4>
